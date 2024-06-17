@@ -9,9 +9,6 @@ MAX_DEPTH = 3
 def get_styles():
     return """
     <style>
-    body {
-        background-color: #23006F;
-    }
     .square {
         display: inline-block;
         width: 60px;
@@ -181,6 +178,7 @@ def main():
         st.session_state.board_size = 3
 
     board_size = st.sidebar.radio("Board Size", ["3x3", "5x5", "7x7"])
+    st.sidebar.write("Get 3 in 3x3, 4 in 5x5 and 5 in 7x7 to WIN the game")
 
     if st.sidebar.button("Start New Game"):
         st.session_state.board_size = int(board_size[0])

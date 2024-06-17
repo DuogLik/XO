@@ -4,7 +4,6 @@ import numpy as np
 # Maximum depth of the search tree
 MAX_DEPTH = 3
 
-
 # Styles
 def get_styles():
     return """
@@ -65,7 +64,6 @@ def get_styles():
     </style>
     """
 
-
 # Minimax with Alpha-Beta Pruning
 def alpha_beta_minimax(board, depth, alpha, beta, maximizing_player, player, opponent):
     winner = check_win(board)
@@ -112,11 +110,9 @@ def alpha_beta_minimax(board, depth, alpha, beta, maximizing_player, player, opp
                         break
         return min_eval, best_move
 
-
 # Initialize the game board
 def initialize_board(size):
     return [[" " for _ in range(size)] for _ in range(size)]
-
 
 # Check for a winner or a tie
 def check_win(board):
@@ -157,14 +153,12 @@ def check_win(board):
 
     return ""
 
-
 # Player makes a move
 def player_move(board, row, col, icon):
     if board[row][col] == " ":
         board[row][col] = icon
         return True
     return False
-
 
 # Computer makes a move
 def computer_move(board, icon):
@@ -176,7 +170,6 @@ def computer_move(board, icon):
 
     if move:
         board[move[0]][move[1]] = icon
-
 
 # Main application
 def main():
@@ -207,7 +200,7 @@ def main():
         st.session_state.winner = ""
         st.session_state.playing = True
 
-        # Initialize stats
+    # Initialize stats
     if "player_wins" not in st.session_state:
         st.session_state.player_wins = 0
     if "computer_wins" not in st.session_state:
@@ -240,7 +233,7 @@ def main():
                 st.session_state.computer_wins += 1
 
     # Display stats only in 'Play with Computer' mode
-    if st.session_state.mode == "Play with Computer":
+    if "mode" in st.session_state and st.session_state.mode == "Play with Computer":
         # Display stats
         st.sidebar.header("Statistics")
         st.sidebar.markdown(f"- Player Wins: {st.session_state.player_wins}", unsafe_allow_html=True)
@@ -258,7 +251,7 @@ def main():
                         if player_move(board, row, col, current_player):
                             st.session_state.winner = check_win(board)
                             if st.session_state.winner == "":
-                                if st.session_state.mode == "Play with Computer" and current_player == "X":
+                                if "mode" in st.session_state and st.session_state.mode == "Play with Computer" and current_player == "X":
                                     computer_move(board, "O")
                                     st.session_state.winner = check_win(board)
                                     if st.session_state.winner == "":
@@ -272,7 +265,6 @@ def main():
                 else:
                     content = f"<div class='square {board[row][col]}'>{board[row][col]}</div>"
                     cols[col].markdown(content, unsafe_allow_html=True)
-
 
 if __name__ == "__main__":
     main()

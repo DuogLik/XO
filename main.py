@@ -1,9 +1,9 @@
 import streamlit as st
-import random
 import numpy as np
 
 # Maximum depth of the search tree
 MAX_DEPTH = 3
+
 
 # Styles
 def get_styles():
@@ -24,13 +24,13 @@ def get_styles():
         margin: 5px; /* Khoảng cách ngoài là 5px */
         border-radius: 10px; /* Bo góc với bán kính 10px */
     }
-    
+
     .header {
         text-align: center; /* Căn giữa nội dung */
         margin-bottom: 30px; /* Khoảng cách phía dưới là 30px */
         color: #FFF; /* Màu chữ là trắng */
     }
-    
+
     .title {
         text-align: center; /* Căn giữa nội dung */
         font-size: 48px; /* Cỡ chữ là 48px */
@@ -40,23 +40,23 @@ def get_styles():
         -webkit-background-clip: text; /* Ứng dụng gradient cho chữ */
         color: transparent; /* Chữ trong suốt */
     }
-    
+
     .game-mode, .game-board {
         margin-bottom: 20px; /* Khoảng cách phía dưới là 20px */
     }
-    
+
     .game-board {
         display: flex; /* Hiển thị dạng flexbox */
         justify-content: center; /* Căn giữa nội dung theo chiều ngang */
         align-items: center; /* Căn giữa nội dung theo chiều dọc */
     }
-    
+
     .board-container {
         display: flex; /* Hiển thị dạng flexbox */
         flex-wrap: wrap; /* Cho phép các phần tử chuyển hàng khi không đủ không gian */
         justify-content: center; /* Căn giữa nội dung theo chiều ngang */
     }
-    
+
     .stats {
         text-align: center; /* Căn giữa nội dung */
         margin-top: 20px; /* Khoảng cách phía trên là 20px */
@@ -64,6 +64,7 @@ def get_styles():
     }
     </style>
     """
+
 
 # Minimax with Alpha-Beta Pruning
 def alpha_beta_minimax(board, depth, alpha, beta, maximizing_player, player, opponent):
@@ -111,9 +112,11 @@ def alpha_beta_minimax(board, depth, alpha, beta, maximizing_player, player, opp
                         break
         return min_eval, best_move
 
+
 # Initialize the game board
 def initialize_board(size):
     return [[" " for _ in range(size)] for _ in range(size)]
+
 
 # Check for a winner or a tie
 def check_win(board):
@@ -131,22 +134,22 @@ def check_win(board):
 
                 # Check horizontally
                 if j <= size - win_conditions[size]:
-                    if all(board[i][j+k] == player for k in range(win_conditions[size])):
+                    if all(board[i][j + k] == player for k in range(win_conditions[size])):
                         return player
 
                 # Check vertically
                 if i <= size - win_conditions[size]:
-                    if all(board[i+k][j] == player for k in range(win_conditions[size])):
+                    if all(board[i + k][j] == player for k in range(win_conditions[size])):
                         return player
 
                 # Check diagonally (top-left to bottom-right)
                 if i <= size - win_conditions[size] and j <= size - win_conditions[size]:
-                    if all(board[i+k][j+k] == player for k in range(win_conditions[size])):
+                    if all(board[i + k][j + k] == player for k in range(win_conditions[size])):
                         return player
 
                 # Check diagonally (top-right to bottom-left)
                 if i <= size - win_conditions[size] and j >= win_conditions[size] - 1:
-                    if all(board[i+k][j-k] == player for k in range(win_conditions[size])):
+                    if all(board[i + k][j - k] == player for k in range(win_conditions[size])):
                         return player
 
     if all(board[i][j] != " " for i in range(size) for j in range(size)):
@@ -154,12 +157,14 @@ def check_win(board):
 
     return ""
 
+
 # Player makes a move
 def player_move(board, row, col, icon):
     if board[row][col] == " ":
         board[row][col] = icon
         return True
     return False
+
 
 # Computer makes a move
 def computer_move(board, icon):
@@ -171,6 +176,7 @@ def computer_move(board, icon):
 
     if move:
         board[move[0]][move[1]] = icon
+
 
 # Main application
 def main():
@@ -201,7 +207,7 @@ def main():
         st.session_state.winner = ""
         st.session_state.playing = True
 
-    # Initialize stats
+        # Initialize stats
     if "player_wins" not in st.session_state:
         st.session_state.player_wins = 0
     if "computer_wins" not in st.session_state:
@@ -233,11 +239,13 @@ def main():
             else:
                 st.session_state.computer_wins += 1
 
-    # Display stats
-    st.sidebar.header("Statistics")
-    st.sidebar.markdown(f"- Player Wins: {st.session_state.player_wins}", unsafe_allow_html=True)
-    st.sidebar.markdown(f"- Computer Wins: {st.session_state.computer_wins}", unsafe_allow_html=True)
-    st.sidebar.markdown(f"- Ties: {st.session_state.ties}", unsafe_allow_html=True)
+    # Display stats only in 'Play with Computer' mode
+    if st.session_state.mode == "Play with Computer":
+        # Display stats
+        st.sidebar.header("Statistics")
+        st.sidebar.markdown(f"- Player Wins: {st.session_state.player_wins}", unsafe_allow_html=True)
+        st.sidebar.markdown(f"- Computer Wins: {st.session_state.computer_wins}", unsafe_allow_html=True)
+        st.sidebar.markdown(f"- Ties: {st.session_state.ties}", unsafe_allow_html=True)
 
     # Display the board
     board_display = st.container()
@@ -265,6 +273,6 @@ def main():
                     content = f"<div class='square {board[row][col]}'>{board[row][col]}</div>"
                     cols[col].markdown(content, unsafe_allow_html=True)
 
+
 if __name__ == "__main__":
     main()
-

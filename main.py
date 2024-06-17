@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import random
 
 # Maximum depth of the search tree
 MAX_DEPTH = 3
@@ -166,9 +167,28 @@ def computer_move(board, icon):
     size = len(board)
     available_moves = [(i, j) for i in range(size) for j in range(size) if board[i][j] == " "]
 
-    move = alpha_beta_minimax(board, 0, -np.inf, np.inf, True, icon, opponent)[1]
+    # Check if the computer can win in the next move
+    for i in range(size):
+        for j in range(size):
+            if board[i][j] == " ":
+                board[i][j] = icon
+                if check_win(board) == icon:
+                    return
+                board[i][j] = " "
 
-    if move:
+    # Check if the player is about to win and block them
+    for i in range(size):
+        for j in range(size):
+            if board[i][j] == " ":
+                board[i][j] = opponent
+                if check_win(board) == opponent:
+                    board[i][j] = icon
+                    return
+                board[i][j] = " "
+
+    # If no immediate win or block is possible, choose a random move
+    if len(available_moves) > 0:
+        move = random.choice(available_moves)
         board[move[0]][move[1]] = icon
 
 # Main application

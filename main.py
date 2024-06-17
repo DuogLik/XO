@@ -9,51 +9,58 @@ MAX_DEPTH = 3
 def get_styles():
     return """
     <style>
+    /* Định nghĩa các lớp CSS */
     .square {
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        line-height: 60px;
-        border: 5px solid #00C9C9;
-        text-align: center;
-        font-size: 24px;
-        cursor: pointer;
-        background-color: #1E006B;
-        color: #FFF;
-        margin: 5px;
-        border-radius: 10px;
+        display: inline-block; /* Hiển thị như khối nội dòng */
+        width: 60px; /* Độ rộng là 60px */
+        height: 60px; /* Chiều cao là 60px */
+        line-height: 60px; /* Chiều cao dòng bằng 60px */
+        border: 5px solid #00C9C9; /* Đường viền 5px, màu xanh lam nhạt */
+        text-align: center; /* Căn giữa nội dung */
+        font-size: 24px; /* Cỡ chữ là 24px */
+        cursor: pointer; /* Con trỏ chuột là pointer (nhấn vào có thao tác) */
+        background-color: #1E006B; /* Màu nền là xanh tím đậm */
+        color: #FFF; /* Màu chữ là trắng */
+        margin: 5px; /* Khoảng cách ngoài là 5px */
+        border-radius: 10px; /* Bo góc với bán kính 10px */
     }
+    
     .header {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #FFF;
+        text-align: center; /* Căn giữa nội dung */
+        margin-bottom: 30px; /* Khoảng cách phía dưới là 30px */
+        color: #FFF; /* Màu chữ là trắng */
     }
+    
     .title {
-        text-align: center;
-        font-size: 48px;
-        font-weight: bold;
-        color: #FFF;
-        background: linear-gradient(to right, #FFEB3B, #FF4081, #3F51B5, #00BCD4);
-        -webkit-background-clip: text;
-        color: transparent;
+        text-align: center; /* Căn giữa nội dung */
+        font-size: 48px; /* Cỡ chữ là 48px */
+        font-weight: bold; /* Chữ đậm */
+        color: #FFF; /* Màu chữ là trắng */
+        background: linear-gradient(to right, #FFEB3B, #FF4081, #3F51B5, #00BCD4); /* Nền gradient từ trái sang phải */
+        -webkit-background-clip: text; /* Ứng dụng gradient cho chữ */
+        color: transparent; /* Chữ trong suốt */
     }
+    
     .game-mode, .game-board {
-        margin-bottom: 20px;
+        margin-bottom: 20px; /* Khoảng cách phía dưới là 20px */
     }
+    
     .game-board {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: flex; /* Hiển thị dạng flexbox */
+        justify-content: center; /* Căn giữa nội dung theo chiều ngang */
+        align-items: center; /* Căn giữa nội dung theo chiều dọc */
     }
+    
     .board-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        display: flex; /* Hiển thị dạng flexbox */
+        flex-wrap: wrap; /* Cho phép các phần tử chuyển hàng khi không đủ không gian */
+        justify-content: center; /* Căn giữa nội dung theo chiều ngang */
     }
+    
     .stats {
-        text-align: center;
-        margin-top: 20px;
-        color: #FFF;
+        text-align: center; /* Căn giữa nội dung */
+        margin-top: 20px; /* Khoảng cách phía trên là 20px */
+        color: #FFF; /* Màu chữ là trắng */
     }
     </style>
     """

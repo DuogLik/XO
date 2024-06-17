@@ -186,10 +186,15 @@ def computer_move(board, icon):
                     return
                 board[i][j] = " "
 
-    # If no immediate win or block is possible, choose a random move
-    if len(available_moves) > 0:
-        move = random.choice(available_moves)
-        board[move[0]][move[1]] = icon
+    # If no immediate win or block is possible, use Minimax with Alpha-Beta Pruning
+    depth = 0
+    alpha = -np.inf
+    beta = np.inf
+    maximizing_player = False  # Máy là minimizing player
+    _, best_move = alpha_beta_minimax(board, depth, alpha, beta, maximizing_player, icon, opponent)
+
+    if best_move:
+        board[best_move[0]][best_move[1]] = icon
 
 # Main application
 def main():

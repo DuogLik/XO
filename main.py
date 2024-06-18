@@ -58,7 +58,7 @@ def get_styles():
 
     .stats {
         text-align: center;
-        margin-top: 10px;
+        margin-top: 200px;
         color: #FFF;
     }
     </style>

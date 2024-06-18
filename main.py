@@ -9,58 +9,57 @@ MAX_DEPTH = 3
 def get_styles():
     return """
     <style>
-    /* Định nghĩa các lớp CSS */
     .square {
-        display: inline-block; /* Hiển thị như khối nội dòng */
-        width: 60px; /* Độ rộng là 60px */
-        height: 60px; /* Chiều cao là 60px */
-        line-height: 60px; /* Chiều cao dòng bằng 60px */
-        border: 5px solid #00C9C9; /* Đường viền 5px, màu xanh lam nhạt */
-        text-align: center; /* Căn giữa nội dung */
-        font-size: 24px; /* Cỡ chữ là 24px */
-        cursor: pointer; /* Con trỏ chuột là pointer (nhấn vào có thao tác) */
-        background-color: #1E006B; /* Màu nền là xanh tím đậm */
-        color: #FFF; /* Màu chữ là trắng */
-        margin: 5px; /* Khoảng cách ngoài là 5px */
-        border-radius: 10px; /* Bo góc với bán kính 10px */
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        border: 5px solid #00C9C9;
+        text-align: center;
+        font-size: 24px;
+        cursor: pointer;
+        background-color: #1E006B;
+        color: #FFF;
+        margin: 5px;
+        border-radius: 10px;
     }
 
     .header {
-        text-align: center; /* Căn giữa nội dung */
-        margin-bottom: 30px; /* Khoảng cách phía dưới là 30px */
-        color: #FFF; /* Màu chữ là trắng */
+        text-align: center;
+        margin-bottom: 30px;
+        color: #FFF;
     }
 
     .title {
-        text-align: center; /* Căn giữa nội dung */
-        font-size: 48px; /* Cỡ chữ là 48px */
-        font-weight: bold; /* Chữ đậm */
-        color: #FFF; /* Màu chữ là trắng */
-        background: linear-gradient(to right, #FFEB3B, #FF4081, #3F51B5, #00BCD4); /* Nền gradient từ trái sang phải */
-        -webkit-background-clip: text; /* Ứng dụng gradient cho chữ */
-        color: transparent; /* Chữ trong suốt */
+        text-align: center;
+        font-size: 48px;
+        font-weight: bold;
+        color: #FFF;
+        background: linear-gradient(to right, #FFEB3B, #FF4081, #3F51B5, #00BCD4);
+        -webkit-background-clip: text;
+        color: transparent;
     }
 
     .game-mode, .game-board {
-        margin-bottom: 20px; /* Khoảng cách phía dưới là 20px */
+        margin-bottom: 20px;
     }
 
     .game-board {
-        display: flex; /* Hiển thị dạng flexbox */
-        justify-content: center; /* Căn giữa nội dung theo chiều ngang */
-        align-items: center; /* Căn giữa nội dung theo chiều dọc */
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .board-container {
-        display: flex; /* Hiển thị dạng flexbox */
-        flex-wrap: wrap; /* Cho phép các phần tử chuyển hàng khi không đủ không gian */
-        justify-content: center; /* Căn giữa nội dung theo chiều ngang */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .stats {
-        text-align: center; /* Căn giữa nội dung */
-        margin-top: 20px; /* Khoảng cách phía trên là 20px */
-        color: #FFF; /* Màu chữ là trắng */
+        text-align: center;
+        margin-top: 20px;
+        color: #FFF;
     }
     </style>
     """
@@ -211,16 +210,32 @@ def main():
     board_size = st.sidebar.radio("Board Size", ["3x3", "5x5", "7x7"])
     st.sidebar.write("Get 3 in 3x3, 4 in 5x5 and 5 in 7x7 to WIN the game")
 
+    if mode == "Play with Computer":
+        st.sidebar.header("Player")
+        player_icon = st.sidebar.radio("Choose your icon", ("X", "O"))
+
     if st.sidebar.button("Start New Game"):
         st.session_state.board_size = int(board_size[0])
         st.session_state.mode = mode
         st.session_state.board = initialize_board(st.session_state.board_size)
-        st.session_state.current_player = "X"
+        if mode == "Play with Computer":
+            st.session_state.player_icon = player_icon
+            st.session_state.computer_icon = "O" if player_icon == "X" else "X"
+            st.session_state.current_player = "X"
+            if player_icon == "O":
+                computer_move(st.session_state.board, "X")
+                st.session_state.current_player = "O"
+        else:
+            st.session_state.player_icon = "X"
+            st.session_state.computer_icon = "O"
+            st.session_state.current_player = "X"
         st.session_state.winner = ""
         st.session_state.playing = True
 
     if "board" not in st.session_state:
         st.session_state.board = initialize_board(st.session_state.board_size)
+        st.session_state.player_icon = "X"
+        st.session_state.computer_icon = "O"
         st.session_state.current_player = "X"
         st.session_state.winner = ""
         st.session_state.playing = True
@@ -252,7 +267,7 @@ def main():
             st.session_state.ties += 1
         else:
             st.markdown(f"<h2 style='color: green;'>Player {winner} Wins!</h2>", unsafe_allow_html=True)
-            if winner == "X":
+            if winner == st.session_state.player_icon:
                 st.session_state.player_wins += 1
             else:
                 st.session_state.computer_wins += 1
@@ -276,11 +291,11 @@ def main():
                         if player_move(board, row, col, current_player):
                             st.session_state.winner = check_win(board)
                             if st.session_state.winner == "":
-                                if "mode" in st.session_state and st.session_state.mode == "Play with Computer" and current_player == "X":
-                                    computer_move(board, "O")
+                                if "mode" in st.session_state and st.session_state.mode == "Play with Computer" and current_player == st.session_state.player_icon:
+                                    computer_move(board, st.session_state.computer_icon)
                                     st.session_state.winner = check_win(board)
                                     if st.session_state.winner == "":
-                                        st.session_state.current_player = "X"
+                                        st.session_state.current_player = st.session_state.player_icon
                                     else:
                                         st.session_state.playing = False
                                 else:
@@ -290,6 +305,15 @@ def main():
                 else:
                     content = f"<div class='square {board[row][col]}'>{board[row][col]}</div>"
                     cols[col].markdown(content, unsafe_allow_html=True)
+
+    if st.button("Play Again"):
+        st.session_state.board = initialize_board(st.session_state.board_size)
+        st.session_state.winner = ""
+        st.session_state.playing = True
+        st.session_state.current_player = "X"
+        if mode == "Play with Computer" and st.session_state.player_icon == "O":
+            computer_move(st.session_state.board, "X")
+            st.session_state.current_player = "O"
 
 if __name__ == "__main__":
     main()

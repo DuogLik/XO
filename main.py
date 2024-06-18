@@ -41,7 +41,7 @@ def get_styles():
     }
 
     .game-mode, .game-board {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .game-board {

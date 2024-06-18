@@ -41,7 +41,7 @@ def get_styles():
     }
 
     .game-mode, .game-board {
-        margin-bottom: 10px;
+        margin-bottom: 20px;
     }
 
     .game-board {
@@ -58,7 +58,7 @@ def get_styles():
 
     .stats {
         text-align: center;
-        margin-top: 20px;
+        margin-top: 10px;
         color: #FFF;
     }
     </style>
